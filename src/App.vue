@@ -1,26 +1,48 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <h1>MyTodoApp</h1>
+    <div>
+      <label for="title">タイトル：</label>
+      <input type="text" v-model="title" placeholder="タイトル">
+    </div>
+    <div>
+      <label for="body">内容：</label>
+      <textarea v-model="body" placeholder="内容"></textarea>
+    </div>
+    <div>
+      <input type="submit" value="追加" @click="addList">
+    </div>
+    <ul v-for="(list, i) in lists" v-bind:key="i">
+      <li>id: {{i}}, title: {{ list.title }} <button @click="deleteList(i)">削除</button></li>
+    </ul>
+
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+  data: () => ({
+    lists: [
+      {title: 'mytodo', body: 'contentcontent'},
+      {title: 'hogehoge', body: 'yuuyuuyuyuyu'}
+    ],
+    title: '',
+    body: ''
+  }),
+  methods: {
+    // リストの追加
+    addList: function(){
+      if(this.title === '' || this.body === '') return
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+      this.lists.push({title: this.title, body: this.body})
+      this.title = ''
+      this.body = ''
+    },
+    // リストの削除
+    deleteList: function(i){
+      this.lists.splice(i,1)
+    }
+  }
+};
+</script>
